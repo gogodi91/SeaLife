@@ -1,0 +1,31 @@
+﻿CREATE TABLE TAXA(
+	Taxa_ID		INTEGER PRIMARY KEY,
+	Type_Spec	VARCHAR(15) 
+	CONSTRAINT chk_Type_Spec CHECK (Type_Spec IN ('FISH','PHY_PL','ZOO_PL','ZOO_BEN','PHY_BEN'))
+	NOT NULL,
+	URL		VARCHAR(128),
+	Scientific_Name	VARCHAR(64),
+	Authority	VARCHAR(64),
+	Rank	VARCHAR(64),
+	Status	VARCHAR(64),
+	Unaccept_reason	VARCHAR(64),
+	Valid_APHIA_ID	INTEGER,
+	Valid_Name	VARCHAR(64),
+	Valid_Authority	VARCHAR(64),
+	Kingdom		VARCHAR(64),
+	Phylum		VARCHAR(64),
+	Class		VARCHAR(64),
+	Order		VARCHAR(64),
+	Family		VARCHAR(64),
+	Genus		VARCHAR(64),
+	Citation	VARCHAR(512),
+	LSID		VARCHAR(128),
+	Is_Marine	BOOLEAN,
+	Is_Brackish	BOOLEAN,
+	Is_Freshwater	BOOLEAN,
+	Is_Terestrial	BOOLEAN,
+	Is_Extinct	BOOLEAN,
+	Match_Type	VARCHAR(32),
+	Modified	CHAR(20),
+	FOREIGN KEY (Type_Spec)	REFERENCES TypeSpec(Type_Spec_ID)
+	);
