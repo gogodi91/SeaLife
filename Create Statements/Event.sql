@@ -1,8 +1,8 @@
 ﻿CREATE TABLE Event (
 	Event_ID	VARCHAR(15) PRIMARY KEY,
-	Station_ID	VARCHAR(32),
-	Area_ID		VARCHAR(32),
-	Cruise_ID	VARCHAR(32),
+	Station_ID	VARCHAR(32) NOT NULL,
+	Area_ID		VARCHAR(32) NOT NULL,
+	Cruise_ID	VARCHAR(32) NOT NULL,
 	Institute_Code	VARCHAR(15),
 	Collect_Code	VARCHAR(32),
 	Gear_Equipment	VARCHAR(20),

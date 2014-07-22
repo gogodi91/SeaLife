@@ -1,4 +1,4 @@
-﻿CREATE TABLE Stations(
+﻿CREATE TABLE Stations (
 	Station_ID	VARCHAR(32) PRIMARY KEY,
 	Station_Type	VARCHAR(10),
 	Station_Code	VARCHAR(20),
@@ -7,6 +7,6 @@
 	Station_Depth	FLOAT,
 	Latitude	CHAR(9),
 	Longitude	CHAR(9),
-	Notes	VARCHAR(64),
-	Substrat	VARCHAR(20)
+	Substrat	VARCHAR(20),
+	Notes		VARCHAR(128)
 	);

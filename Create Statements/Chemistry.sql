@@ -1,7 +1,7 @@
 ﻿CREATE TABLE Chemistry (
 	Chem_ID		INTEGER PRIMARY KEY,
-	Event_ID	VARCHAR(10),
-	Param_ID	VARCHAR(10),
+	Event_ID	VARCHAR(10) NOT NULL,
+	Param_ID	VARCHAR(10) NOT NULL,
 	Param_Value	FLOAT,
 	Sample_Validated	BOOLEAN,
 	Sample_Number	INTEGER,
