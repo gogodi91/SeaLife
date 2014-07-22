@@ -1,0 +1,20 @@
+﻿CREATE TABLE Event (
+	Event_ID	VARCHAR(15) PRIMARY KEY,
+	Station_ID	VARCHAR(32),
+	Area_ID		VARCHAR(32),
+	Cruise_ID	VARCHAR(32),
+	Institute_Code	VARCHAR(15),
+	Collect_Code	VARCHAR(32),
+	Gear_Equipment	VARCHAR(20),
+	Sample_type	VARCHAR(8),
+	Date_Local_Time	DATE,
+	Date_UTC	VARCHAR(24),
+	Start_Depth	FLOAT,
+	End_Depth	FLOAT,
+	Operator	VARCHAR(32),
+	Post_Operator	VARCHAR(32),
+	Notes		VARCHAR(128),
+	FOREIGN KEY (Station_ID) REFERENCES Stations(Station_ID),
+	FOREIGN KEY (Area_ID) REFERENCES Area(Area_ID),
+	FOREIGN KEY (Cruise_ID) REFERENCES Cruise(Cruise_ID)
+	);

@@ -1,0 +1,15 @@
+﻿CREATE TABLE DataAB (
+	A_B_ID		INTEGER PRIMARY KEY,
+	Chem_ID		INTEGER,
+	TAXA_ID		INTEGER,
+	Type_Spec_ID	VARCHAR(15),
+	Abundance	INTEGER,
+	Abundance_Unit	VARCHAR(15),
+	Biomass		FLOAT,
+	Biomass_Unit	VARCHAR(15),
+	Replica_Unit	INTEGER,
+	Notes		VARCHAR(128),
+	FOREIGN KEY Chem_ID REFERENCES Cheistry(Chem_ID),
+	FOREIGN KEY TAXA_ID REFERENCES TAXA(TAXA_ID),
+	FOREIGN KEY Type_Spec_ID REFERENCES TypeSpec(Type_Spec_ID)
+	);
