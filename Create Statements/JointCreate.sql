@@ -1,5 +1,26 @@
-﻿CREATE TABLE Area (
-	Area_ID	VARCHAR(32) PRIMARY KEY,
+﻿--Database: "Monitoring"
+
+--DROP DATABASE "Monitoring";
+/*
+CREATE DATABASE "Monitoring"
+  WITH OWNER = lev3_13_1003626d
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'Bulgarian_Bulgaria.1251'
+       LC_CTYPE = 'Bulgarian_Bulgaria.1251'
+       CONNECTION LIMIT = -1;
+
+COMMENT ON DATABASE "Monitoring"
+  IS 'Sea life monitoring database';
+*/
+
+/*------------------------
+	Area
+--------------------------*/
+DROP TABLE IF EXISTS Area CASCADE;
+CREATE SEQUENCE Area_ID_seq;
+CREATE TABLE Area (
+	Area_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Start_Latitude CHAR(9),
 	Start_Longitude CHAR(9),
 	End_Latitude CHAR(9),
@@ -9,18 +30,34 @@
 	End_Date DATE,
 	End_Time TIME
 	);
+ALTER SEQUENCE Area_ID_seq OWNED BY Area.Area_ID;
 
+/*------------------------
+	Cruise
+--------------------------*/
+DROP TABLE IF EXISTS Cruise CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE Cruise (
-	Cruise_ID	VARCHAR(32) PRIMARY KEY,
-	Start_Date DATE,
-	End_Date DATE,
-	Objectives VARCHAR(64),
-	Vessel_ID VARCHAR (64),
+	Cruise_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Cruise_ID_seq'),
+	Start_Date	DATE,
+	End_Date	DATE,
+	Objectives	VARCHAR(64),
+	Vessel_ID	VARCHAR (64),/*nova tablica s cruisi*/
 	CSR_Code VARCHAR (32)
 	);
+ALTER SEQUENCE Cruise_ID_seq OWNED BY Cruise.Cruise_ID;
 
+/*------------------------
+	Vessel
+--------------------------*/
+
+/*------------------------
+	Stations
+--------------------------*/
+DROP TABLE IF EXISTS Stations CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE Stations (
-	Station_ID	VARCHAR(32) PRIMARY KEY,
+	Station_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Station_Type	VARCHAR(10),
 	Station_Code	VARCHAR(20),
 	Station_Name_BG	VARCHAR(32),
@@ -32,14 +69,24 @@ CREATE TABLE Stations (
 	Notes		VARCHAR(128)
 	);
 
+/*------------------------
+	TypeSpec
+--------------------------*/
+DROP TABLE IF EXISTS TypeSpec CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE TypeSpec (
-	Type_Spec_ID	VARCHAR(15) PRIMARY KEY
+	Type_Spec_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	CONSTRAINT chk_Type_Spec CHECK (Type_Spec_ID IN ('FISH','PHY_PL','ZOO_PL','ZOO_BEN','PHY_BEN')),
 	BSID		INTEGER
 	);
 
+/*------------------------
+	TAXA
+--------------------------*/
+DROP TABLE IF EXISTS TAXA CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;	
 CREATE TABLE TAXA (
-	Taxa_ID		INTEGER PRIMARY KEY,
+	Taxa_ID		SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Type_Spec	VARCHAR(15) 
 	CONSTRAINT chk_Type_Spec CHECK (Type_Spec IN ('FISH','PHY_PL','ZOO_PL','ZOO_BEN','PHY_BEN'))
 	NOT NULL,
@@ -70,14 +117,24 @@ CREATE TABLE TAXA (
 	FOREIGN KEY (Type_Spec)	REFERENCES TypeSpec(Type_Spec_ID)
 	);
 
+/*------------------------
+	ChemParam
+--------------------------*/
+DROP TABLE IF EXISTS ChemParam CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;	
 CREATE TABLE ChemParam (
-	Param_ID	VARCHAR(11) PRIMARY KEY,
+	Param_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),/*not null, autoincr, unique*/
 	Parameter	VARCHAR(10),
 	Dimention	VARCHAR(10)
 	);
 
+/*------------------------
+	Event
+--------------------------*/
+DROP TABLE IF EXISTS Event CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;	
 CREATE TABLE Event (
-	Event_ID	VARCHAR(15) PRIMARY KEY,
+	Event_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Station_ID	VARCHAR(32) NOT NULL,
 	Area_ID		VARCHAR(32) NOT NULL,
 	Cruise_ID	VARCHAR(32) NOT NULL,
@@ -97,8 +154,13 @@ CREATE TABLE Event (
 	FOREIGN KEY (Cruise_ID) REFERENCES Cruise(Cruise_ID)
 	);
 
+/*------------------------
+	Chemistry
+--------------------------*/
+DROP TABLE IF EXISTS Chemistry CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE Chemistry (
-	Chem_ID		INTEGER PRIMARY KEY,
+	Chem_ID		SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Event_ID	VARCHAR(15) NOT NULL,
 	Param_ID	VARCHAR(11) NOT NULL,
 	Param_Value	FLOAT,
@@ -110,8 +172,13 @@ CREATE TABLE Chemistry (
 	FOREIGN KEY (Param_ID) REFERENCES ChemParam(Param_ID)
 	);
 
+/*------------------------
+	DataAB
+--------------------------*/
+DROP TABLE IF EXISTS DataAB CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE DataAB (
-	A_B_ID		VARCHAR(10) PRIMARY KEY,
+	A_B_ID		SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	/*Event_ID	VARCHAR(15) NOT NULL,
 	eventID becomes redundant as it is present in the table
 	Cemistry and it`s eventID should corespond to the same 
@@ -134,22 +201,38 @@ CREATE TABLE DataAB (
 	FOREIGN KEY (Type_Spec_ID) REFERENCES TypeSpec(Type_Spec_ID)
 	);
 
+/*------------------------
+	SizeAgeFish
+--------------------------*/
+DROP TABLE IF EXISTS SizeAgeFish CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE SizeAgeFish (
-	Size_Age_ID	INTEGER PRIMARY KEY,
+	Size_Age_ID	SMALLINT PRIMARY KEY NOT NULL DEFAULT nextval('Area_ID_seq'),
 	A_B_ID		VARCHAR(10) NOT NULL,
 	FOREIGN KEY (A_B_ID) REFERENCES DataAB(A_B_ID)
 	);
 
+/*------------------------
+	Age
+--------------------------*/
+DROP TABLE IF EXISTS Age CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE Age (
-	Size_Age_ID	INTEGER NOT NULL,
+	Size_Age_ID	SMALLINT NOT NULL DEFAULT nextval('Area_ID_seq'),
 	Age		FLOAT,
 	Weight		FLOAT,
 	FOREIGN KEY (Size_Age_ID) REFERENCES SizeAgeFish(Size_Age_ID)
 	);
 
+/*------------------------
+	Size
+--------------------------*/
+DROP TABLE IF EXISTS Size CASCADE;
+CREATE SEQUENCE Cruise_ID_seq;
 CREATE TABLE Size (
-	Size_Age_ID	INTEGER NOT NULL,
-	Size		FLOAT,
+	Size_Age_ID	SMALLINT NOT NULL DEFAULT nextval('Area_ID_seq'),
+	Size_From	FLOAT,
+	Size_To		FLOAT,
 	Weight		FLOAT,
 	FOREIGN KEY (Size_Age_ID) REFERENCES SizeAgeFish(Size_Age_ID)
 	);
