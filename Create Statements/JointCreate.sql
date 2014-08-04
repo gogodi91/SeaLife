@@ -14,6 +14,31 @@ COMMENT ON DATABASE "Monitoring"
   IS 'Sea life monitoring database';
 */
 
+/*
+	ALL INDEXES
+CREATE index Area_ID_Index ON Area(Area_ID);
+
+CREATE index FK_Station_ID_Index ON Event(Station_ID);
+CREATE index FK_Area_ID_Index ON Event(Area_ID);
+CREATE index FK_Cruise_ID_Index ON Event(Cruise_ID);
+CREATE index FK_Notes_ID_Index ON Event(Notes_ID);
+
+CREATE index FK_Event_ID_Index ON Chemistry(Event_ID);
+CREATE index FK_Param_ID_Index ON Chemistry(Param_ID);
+
+CREATE index FK_Vessel_ID_Index ON Cruise(Vessel_ID);
+
+CREATE index FK_Type_Spec_Index ON TAXA(Type_Spec);
+
+CREATE index FK_Chem_ID_Index ON DataAB(Chem_ID);
+CREATE index FK_TAXA_ID_Index ON DataAB(TAXA_ID);
+
+CREATE index FK_A_B_ID_Index ON SizeAgeFish(A_B_ID);
+
+CREATE index FK_Age_ID_Index ON Age(Age_ID);
+CREATE index FK_Size_ID_Index ON Size(Size_ID);
+*/
+
 /*------------------------
 	Area
 --------------------------*/
@@ -59,6 +84,7 @@ CREATE TABLE Cruise (
 	FOREIGN KEY (Vessel_ID) REFERENCES Vessel(Vessel_ID)
 	);
 ALTER SEQUENCE Cruise_ID_seq OWNED BY Cruise.Cruise_ID;
+CREATE index FK_Vessel_ID_Index ON Cruise(Vessel_ID);
 
 /*------------------------
 	Notes
@@ -138,6 +164,7 @@ CREATE TABLE TAXA (
 	FOREIGN KEY (Type_Spec)	REFERENCES TypeSpec(Type_Spec_ID)
 	);
 ALTER SEQUENCE Taxa_ID_seq OWNED BY TAXA.Taxa_ID;
+CREATE index FK_Type_Spec_Index ON TAXA(Type_Spec);
 
 /*------------------------
 	ChemParam
@@ -179,6 +206,11 @@ CREATE TABLE Event (
 	);
 ALTER SEQUENCE Event_ID_seq OWNED BY Event.Event_ID;
 
+CREATE index FK_Station_ID_Index ON Event(Station_ID);
+CREATE index FK_Area_ID_Index ON Event(Area_ID);
+CREATE index FK_Cruise_ID_Index ON Event(Cruise_ID);
+CREATE index FK_Notes_ID_Index ON Event(Notes_ID);
+
 /*------------------------
 	Chemistry
 --------------------------*/
@@ -198,6 +230,9 @@ CREATE TABLE Chemistry (
 	FOREIGN KEY (Notes) REFERENCES Notes(Notes_ID)
 	);
 ALTER SEQUENCE Chem_ID_seq OWNED BY Chemistry.Chem_ID;
+
+CREATE index FK_Event_ID_Index ON Chemistry(Event_ID);
+CREATE index FK_Param_ID_Index ON Chemistry(Param_ID);
 
 /*------------------------
 	DataAB
@@ -230,6 +265,9 @@ CREATE TABLE DataAB (
 	);
 ALTER SEQUENCE A_B_ID_seq OWNED BY DataAB.A_B_ID;
 
+CREATE index FK_Chem_ID_Index ON DataAB(Chem_ID);
+CREATE index FK_TAXA_ID_Index ON DataAB(TAXA_ID);
+
 /*------------------------
 	SizeAgeFish
 --------------------------*/
@@ -241,6 +279,8 @@ CREATE TABLE SizeAgeFish (
 	FOREIGN KEY (A_B_ID) REFERENCES DataAB(A_B_ID)
 	);
 ALTER SEQUENCE Size_Age_ID_seq OWNED BY SizeAgeFish.Size_Age_ID;
+
+CREATE index FK_A_B_ID_Index ON SizeAgeFish(A_B_ID);
 
 /*------------------------
 	Age
@@ -256,6 +296,8 @@ CREATE TABLE Age (
 	);
 ALTER SEQUENCE Age_ID_seq OWNED BY Age.Age_ID;
 
+CREATE index FK_Age_ID_Index ON Age(Age_ID);
+
 /*------------------------
 	Size
 --------------------------*/
@@ -269,3 +311,5 @@ CREATE TABLE Size (
 	FOREIGN KEY (Size_ID) REFERENCES SizeAgeFish(Size_Age_ID)
 	);
 ALTER SEQUENCE Size_ID_seq OWNED BY Size.Size_ID;
+
+CREATE index FK_Size_ID_Index ON Size(Size_ID);
